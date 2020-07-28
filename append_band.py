@@ -25,7 +25,7 @@ def worker():
         img = data.ReadAsArray()
         [R,NIR] = [img[0],img[1]]
         new_band = (NIR-R)/(NIR+R)
-        driver = gdal.GetDriverByName('ENVI')
+        driver = gdal.GetDriverByName('GTIFF')
         new_img = driver.Create(create_fname(path),col,row,bands=5,eType = gdal.GDT_Float32)
         new_img.SetGeoTransform(geot)
         new_img.SetProjection(proj)
@@ -43,7 +43,7 @@ def worker():
 folder = 'E:/Deep_frustrating/masked_pansharpening_results' #The folder with masked pan sharpening results
 flist = os.listdir(folder) 
 for f in flist:
-    if f.endswith('masked'):
+    if f.endswith('.tiff'):
         full_path = folder+'/'+f
         q.put(full_path)
 print('All task requests sent\n', end='')
