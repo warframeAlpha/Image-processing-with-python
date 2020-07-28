@@ -43,7 +43,7 @@ def worker():
 folder = 'E:/Deep_frustrating/masked_pansharpening_results' #The folder with masked pan sharpening results
 flist = os.listdir(folder) 
 for f in flist:
-    if f.endswith('.tiff'):
+    if f.endswith('.tif'):
         full_path = folder+'/'+f
         q.put(full_path)
 print('All task requests sent\n', end='')
