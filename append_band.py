@@ -2,7 +2,8 @@
 import gdal
 import os
 import numpy as np
-import queue, threading
+import queue
+import _thread
 
 q = queue.Queue()
 def create_fname(path):
@@ -48,7 +49,7 @@ for f in flist:
 print('All task requests sent\n', end='')
 # turn-on the worker thread
 for workers_num in range(5):
-    threading.Thread(target=worker, daemon=True).start()
+    _thread.start_new_thread(worker)
 # block until all tasks are done
 q.join()
 print('All work completed')
