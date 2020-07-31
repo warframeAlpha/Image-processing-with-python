@@ -16,7 +16,7 @@ def create_fname(path):
     return fname
 
 def worker():
-    while q.empty == False:
+    while q.empty() == False:
         path = q.get()
         data = gdal.Open(path)
         geot = data.GetGeoTransform()
