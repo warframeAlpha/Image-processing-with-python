@@ -1,14 +1,10 @@
-import os
-import numpy as np
-import time
-import gdal
+
 # This program uses gdal_translate to subset muiltiple images. 
 # For each image, this program generate several tiles with overlap areas.
 import gdal
 import os
 import numpy as np
 import time
-os.chdir('E:/Deep_frustrating/tiles')
 # Use gdal_trnaslate to subset multiple images.
 # Since our images contain large no-data area, I need to read the image as array to check whether the image is a empty image or not.
 # The function only write image to the disk when the images are not empty
@@ -52,7 +48,7 @@ def translate_multiple(path,step,img_size):
     for file in img_list:
         subset_index = 0
         if file.endswith('masked'):
-            sub_path= 'E:/Deep_frustrating/ENVI_tiles_1250_65535/'+str(file)+'_subset'
+            sub_path= 'E:/Deep_frustrating/tiles_2400_65535/'+str(file)+'_subset'
             os.mkdir(sub_path)
 #         print(files)
             fname = path+'/'+file
@@ -73,7 +69,7 @@ def translate_multiple(path,step,img_size):
                         startx = endx-xsize
                     img_array = img.ReadAsArray(startx,starty,xsize,ysize)
 
-                    if np.sum(img_array) > 0:
+                    if np.min(img_array) <65535:
                         subset_index += 1
                         output = sub_path+'/'+file+'_'+str(subset_index)+'subset'
                         command = str('gdal_translate  --config GDAL_CACHEMAX 16384 -of ENVI -srcwin '+str(startx)+' '+str(starty)+' '+str(xsize)+' '+str(ysize)+' '+fname+' '+output)
@@ -100,5 +96,5 @@ def warp_multiple(path):
     print('warp took ',t, 'seconds')
 
 path= 'E:/Deep_frustrating/masked_pahshapening_results_65535'
-translate_multiple(path,step=1250,img_size = 2500)  
+translate_multiple(path,step=2400,img_size = 2500)  
 # subset_single(1250,2500)

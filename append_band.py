@@ -16,7 +16,9 @@ def create_fname(path):
     return fname
 
 def worker():
+    print('enter func')
     while q.empty() == False:
+        print('enter loop')
         path = q.get()
         data = gdal.Open(path)
         geot = data.GetGeoTransform()
@@ -39,17 +41,18 @@ def worker():
         img = None
         q.task_done()
 
-# send thirty task requests to the worker
+# send task requests to the worker
 folder = 'E:/Deep_frustrating/masked_pansharpening_results' #The folder with masked pan sharpening results
 flist = os.listdir(folder) 
 for f in flist:
-    if f.endswith('.tif'):
+    if f.endswith('.tiff'):
         full_path = folder+'/'+f
         q.put(full_path)
-print('All task requests sent\n', end='')
+print('q=',q.qsize())
 # turn-on the worker thread
 for workers_num in range(5):
-    _thread.start_new_thread(worker)
+    _thread.start_new_thread(worker,())
+print('worker start done')
 # block until all tasks are done
 q.join()
 print('All work completed')
