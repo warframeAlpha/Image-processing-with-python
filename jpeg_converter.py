@@ -4,7 +4,6 @@ import numpy as np
 '''
 This program converts tiff to jpeg. I assume that there will be only one dimension exceeds 65535, which is the max pixel number in a dimension for JPEG.
 If not, change the code, subset images into 4 pieces.
-Don't feed me tiff
 '''
 
 folder_path='H:/Ender/tempp' # Change this line. Don't use \, use /
