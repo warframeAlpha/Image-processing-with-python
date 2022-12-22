@@ -78,7 +78,6 @@ def image_stactistic(a_50,b_50,c_50,img_matrix,t_matrix,init_state):
             # max_avg[i][j] = ss_max[i][j]- init_state[i][j]
 
 def compute_t4(a,b,c,img_matrix,t_matrix,init_state):
-    # this function is used to fullfish Prof. Wang's request (20190905)
     k1 = 0.1 # the only varibale to adjust
     k2 = 1-k1 # t90: k2 = 0.9
     t_method = np.full((row,col),-1)
@@ -92,7 +91,7 @@ def compute_t4(a,b,c,img_matrix,t_matrix,init_state):
                 t_method[i][j] = t0
             if t0 <=t_max[i][j]:
                 t_method[i][j] = -1
-    
+    # absolute hours
     t90 = driver.Create("E:/t100/regression/t90_powell.tiff", xsize = col, ysize = row, bands=1,eType = gdal.GDT_Float32)
     t90.GetRasterBand(1).WriteArray(t_method)
     t90.SetGeoTransform(geot)
@@ -103,6 +102,7 @@ def compute_t4(a,b,c,img_matrix,t_matrix,init_state):
     t_max[tt==-1]=np.nan
     arr = t_method+t_max
     np.nan_to_num(arr,copy=False,nan=-1)
+    # relative hours
     t90_after_tmax.GetRasterBand(1).WriteArray(arr)
     t90_after_tmax.SetGeoTransform(geot)
     t90_after_tmax.SetProjection(proj)
